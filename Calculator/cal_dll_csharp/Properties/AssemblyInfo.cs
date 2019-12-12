@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Calculator")]
+[assembly: AssemblyTitle("cal_dll_csharp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Calculator")]
+[assembly: AssemblyProduct("cal_dll_csharp")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("06c0b03d-c449-4c00-9c84-7d4dd5c677d5")]
+[assembly: Guid("fc014a74-c2e8-4144-9cb9-0eb6aa864c5e")]
 
 // 程序集的版本信息由下列四个值组成: 
 //
