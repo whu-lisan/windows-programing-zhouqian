@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Calculator
 {
-    public partial class FunctionForm : Form
+    public partial class MatrixForm : Form
     {
-        public FunctionForm()
+        public MatrixForm()
         {
             InitializeComponent();
         }
