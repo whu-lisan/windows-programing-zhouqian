@@ -57,10 +57,10 @@ namespace Calculator
 
         }
 
-        private void funcButton_Click(object sender, EventArgs e)
+        private void matrixButton_Click(object sender, EventArgs e)
         {
-            Form funcForm = new MatrixForm();
-            funcForm.Show();
+            Form matrixForm = new MatrixForm();
+            matrixForm.Show();
         }
     }
 }

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cal_dll", "cal_dll\cal_dll.vcxproj", "{9DEB5768-E23C-4F8E-8922-B9DAD1493225}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cal_dll_csharp", "cal_dll_csharp\cal_dll_csharp.csproj", "{FC014A74-C2E8-4144-9CB9-0EB6AA864C5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Calculator\Calculator.csproj", "{06C0B03D-C449-4C00-9C84-7D4DD5C677D5}"
@@ -19,16 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Debug|x64.ActiveCfg = Debug|x64
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Debug|x64.Build.0 = Debug|x64
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Debug|x86.ActiveCfg = Debug|Win32
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Debug|x86.Build.0 = Debug|Win32
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Release|Any CPU.ActiveCfg = Release|Win32
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Release|x64.ActiveCfg = Release|x64
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Release|x64.Build.0 = Release|x64
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Release|x86.ActiveCfg = Release|Win32
-		{9DEB5768-E23C-4F8E-8922-B9DAD1493225}.Release|x86.Build.0 = Release|Win32
 		{FC014A74-C2E8-4144-9CB9-0EB6AA864C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC014A74-C2E8-4144-9CB9-0EB6AA864C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC014A74-C2E8-4144-9CB9-0EB6AA864C5E}.Debug|x64.ActiveCfg = Debug|Any CPU
