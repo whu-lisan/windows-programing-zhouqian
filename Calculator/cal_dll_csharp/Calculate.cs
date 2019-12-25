@@ -202,17 +202,26 @@ namespace cal_dll_csharp
                 expr.Pop();
             }
             Number result = resultSt.Peek();
-            return result.isDouble ? (double)result.value: (int)(double)result.value;
+            double val = 0.0;
+            if (result.value.GetType() == typeof(double))
+                val = (double)result.value;
+            else
+                val = (int)result.value;
+            return result.isDouble ? val: (int)val;
         }
 
         public static object unaryOperate(Operator @operator, Number number)
         {
+            if (number == null)
+                return 1 / 0.0;
+            double result = 0.0;
+            double value = 0;
+            if (number.value.GetType() == typeof(double))
+                value = (double)number.value;
+            else
+                value = (int)number.value;
             try
-            {
-                if (number == null)
-                    return 1 / 0.0;
-                double result = 0.0;
-                double value = (double)number.value;
+            { 
                 if (number.GetType() == typeof(Operator))
                     throw new CalException("请检查是否存在两个连续运算符");
                 switch (@operator.operatorType)
@@ -253,7 +262,7 @@ namespace cal_dll_csharp
                             return @operator.boolValue ? 1 : 0;
                         }
                         @operator.isBool = false;
-                        return ~(int)number.value;
+                        return ~(int)value;
                     default:
                         return number.value;
                 }
@@ -276,8 +285,15 @@ namespace cal_dll_csharp
             double result = 0.0;
             if (left.GetType() == typeof(Operator) || right.GetType() == typeof(Operator))
                 throw new CalException("请检查是否存在两个连续运算符");
-            double leftValue = (double)left.value;
-            double rightValue = (double)right.value;
+            double leftValue = 0, rightValue = 0;
+            if (left.value.GetType() == typeof(double))
+                leftValue = (double)left.value;
+            else
+                leftValue = (int)left.value;
+            if (right.value.GetType() == typeof(double))
+                rightValue = (double)right.value;
+            else
+                rightValue = (int)right.value;
             try
             {
                 switch (@operator.operatorType)
@@ -353,7 +369,7 @@ namespace cal_dll_csharp
                             return @operator.boolValue ? 1 : 0;
                         }
                         @operator.isBool = false;
-                        return (int)left.value & (int)right.value;
+                        return (int)leftValue & (int)rightValue;
                     case "OR":
                         @operator.isDouble = false;
                         if (left.isBool && right.isBool)
@@ -363,7 +379,7 @@ namespace cal_dll_csharp
                             return @operator.boolValue ? 1 : 0;
                         }
                         @operator.isBool = false;
-                        return (int)left.value | (int)right.value;
+                        return (int)leftValue | (int)rightValue;
                     case "XOR":
                         @operator.isDouble = false;
                         if (left.isBool && right.isBool)
@@ -372,7 +388,7 @@ namespace cal_dll_csharp
                             return @operator.boolValue ? 1 : 0;
                         }
                         @operator.isBool = false;
-                        return (int)left.value ^ (int)right.value;
+                        return (int)leftValue ^ (int)rightValue;
                     default:
                         return left.value;
                 }
