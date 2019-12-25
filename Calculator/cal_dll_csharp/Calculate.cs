@@ -17,9 +17,9 @@ namespace cal_dll_csharp
         public static Number getNumber(string s)
         {
             Number number = null;
-            int number_int = 0;
+            long number_long = 0L;
             double number_double = 0.0;
-            bool success_int = int.TryParse(s, out number_int);
+            bool success_long = long.TryParse(s, out number_long);
             bool success_double = double.TryParse(s, out number_double);
             if(s.Equals("e"))
             {
@@ -34,12 +34,12 @@ namespace cal_dll_csharp
                 number.value = Math.PI;
             }
             //如果为操作数
-            else if (success_int || success_double)
+            else if (success_long || success_double)
             {
                 number = new Number();
                 number.isBool = false;
-                number.isDouble = !success_int;
-                number.value = success_int ? number_int : number_double;
+                number.isDouble = !success_long;
+                number.value = success_long ? number_long : number_double;
             }
             else if (s.Equals("True") || s.Equals("False"))
             {
@@ -47,7 +47,7 @@ namespace cal_dll_csharp
                 number.isBool = true;
                 number.isDouble = false;
                 number.boolValue = s.Equals("True");
-                number.value = number.boolValue ? 1 : 0;
+                number.value = number.boolValue ? 1L : 0L;
             }
             else //为运算符
             {
@@ -206,8 +206,8 @@ namespace cal_dll_csharp
             if (result.value.GetType() == typeof(double))
                 val = (double)result.value;
             else
-                val = (int)result.value;
-            return result.isDouble ? val: (int)val;
+                val = (long)result.value;
+            return result.isDouble ? val: (long)val;
         }
 
         public static object unaryOperate(Operator @operator, Number number)
@@ -219,7 +219,7 @@ namespace cal_dll_csharp
             if (number.value.GetType() == typeof(double))
                 value = (double)number.value;
             else
-                value = (int)number.value;
+                value = (long)number.value;
             try
             { 
                 if (number.GetType() == typeof(Operator))
@@ -227,7 +227,6 @@ namespace cal_dll_csharp
                 switch (@operator.operatorType)
                 {
                     case "Sin":
-                        @operator.isDouble = true;
                         return Math.Sin(value);
                     case "Sinh":
                         return Math.Sinh(value);
@@ -248,21 +247,21 @@ namespace cal_dll_csharp
                     case "^2":
                         result = value * value;
                         @operator.isDouble = number.isDouble;
-                        return number.isDouble ? result : (int) result;
+                        return number.isDouble ? result : (long) result;
                     case "^3":
                         result = value * value * value;
                         @operator.isDouble = number.isDouble;
-                        return number.isDouble ? result : (int)result;
+                        return number.isDouble ? result : (long)result;
                     case "NOT":
                         @operator.isDouble = false;
                         if (number.isBool)
                         {
                             @operator.isBool = true;
                             @operator.boolValue = !number.boolValue;
-                            return @operator.boolValue ? 1 : 0;
+                            return @operator.boolValue ? 1L : 0L;
                         }
                         @operator.isBool = false;
-                        return ~(int)value;
+                        return ~(long)value;
                     default:
                         return number.value;
                 }
@@ -289,11 +288,11 @@ namespace cal_dll_csharp
             if (left.value.GetType() == typeof(double))
                 leftValue = (double)left.value;
             else
-                leftValue = (int)left.value;
+                leftValue = (long)left.value;
             if (right.value.GetType() == typeof(double))
                 rightValue = (double)right.value;
             else
-                rightValue = (int)right.value;
+                rightValue = (long)right.value;
             try
             {
                 switch (@operator.operatorType)
@@ -301,31 +300,31 @@ namespace cal_dll_csharp
                     case "+":
                         result = leftValue + rightValue;
                         @operator.isDouble = left.isDouble || right.isDouble;
-                        return @operator.isDouble ? result : (int)result;
+                        return @operator.isDouble ? result : (long)result;
                     case "-":
                         result = leftValue - rightValue;
                         @operator.isDouble = left.isDouble || right.isDouble;
-                        return @operator.isDouble ? result : (int)result;
+                        return @operator.isDouble ? result : (long)result;
                     case "*":
                         result = leftValue * rightValue;
                         @operator.isDouble = left.isDouble || right.isDouble;
-                        return @operator.isDouble ? result : (int)result;
+                        return @operator.isDouble ? result : (long)result;
                     case "/":
                         if (rightValue - 0 < 0.00001)
                             throw new CalException("不能除以0");
                         @operator.isDouble = (leftValue % rightValue) < 0.00001;
                         result = leftValue / rightValue;
-                        return @operator.isDouble ? result : (int)result;
+                        return @operator.isDouble ? result : (long)result;
                     case "%":
                         if (rightValue - 0 < 0.00001)
                             throw new CalException("不能对0求余数");
                         result = leftValue * rightValue;
                         @operator.isDouble = left.isDouble || right.isDouble;
-                        return @operator.isDouble ? result : (int)result;
+                        return @operator.isDouble ? result : (long)result;
                     case "^":
                         result = Math.Pow(leftValue, rightValue);
                         @operator.isDouble = left.isDouble || right.isDouble;
-                        return @operator.isDouble ? result : (int)result;
+                        return @operator.isDouble ? result : (long)result;
                     case "√":
                         if (rightValue< 0.5)
                             throw new CalException("开n次根号,n只能是大于1的正数");
@@ -334,61 +333,61 @@ namespace cal_dll_csharp
                         @operator.isBool = true;
                         @operator.isDouble = false;
                         @operator.boolValue = leftValue > rightValue;
-                        return @operator.boolValue ? 1 : 0;
+                        return @operator.boolValue ? 1L : 0L;
                     case "<":
                         @operator.isBool = true;
                         @operator.isDouble = false;
                         @operator.boolValue = leftValue < rightValue;
-                        return @operator.boolValue ? 1 : 0;
+                        return @operator.boolValue ? 1L : 0L;
                     case ">=":
                         @operator.isBool = true;
                         @operator.isDouble = false;
                         @operator.boolValue = leftValue >= rightValue;
-                        return @operator.boolValue ? 1 : 0;
+                        return @operator.boolValue ? 1L : 0L;
                     case "<=":
                         @operator.isBool = true;
                         @operator.isDouble = false;
                         @operator.boolValue = leftValue <= rightValue;
-                        return @operator.boolValue ? 1 : 0;
+                        return @operator.boolValue ? 1L : 0L;
                     case "==":
                         @operator.isBool = true;
                         @operator.isDouble = false;
                         @operator.boolValue = Math.Abs(leftValue - rightValue) < 0.00001;
-                        return @operator.boolValue ? 1 : 0;
+                        return @operator.boolValue ? 1L : 0L;
                     case "!=":
                         @operator.isBool = true;
                         @operator.isDouble = false;
                         @operator.boolValue = Math.Abs(leftValue - rightValue) >= 0.00001;
-                        return @operator.boolValue ? 1 : 0;
+                        return @operator.boolValue ? 1L : 0L;
                     case "AND":
                         @operator.isDouble = false;
                         if (left.isBool && right.isBool)
                         {
                             @operator.isBool = true;
                             @operator.boolValue = left.boolValue && right.boolValue;
-                            return @operator.boolValue ? 1 : 0;
+                            return @operator.boolValue ? 1L : 0L;
                         }
                         @operator.isBool = false;
-                        return (int)leftValue & (int)rightValue;
+                        return (long)leftValue & (long)rightValue;
                     case "OR":
                         @operator.isDouble = false;
                         if (left.isBool && right.isBool)
                         {
                             @operator.isBool = true;
                             @operator.boolValue = left.boolValue || right.boolValue;
-                            return @operator.boolValue ? 1 : 0;
+                            return @operator.boolValue ? 1L : 0L;
                         }
                         @operator.isBool = false;
-                        return (int)leftValue | (int)rightValue;
+                        return (long)leftValue | (long)rightValue;
                     case "XOR":
                         @operator.isDouble = false;
                         if (left.isBool && right.isBool)
                         {
                             @operator.boolValue = left.boolValue ^ right.boolValue;
-                            return @operator.boolValue ? 1 : 0;
+                            return @operator.boolValue ? 1L : 0L;
                         }
                         @operator.isBool = false;
-                        return (int)leftValue ^ (int)rightValue;
+                        return (long)leftValue ^ (long)rightValue;
                     default:
                         return left.value;
                 }
@@ -402,7 +401,7 @@ namespace cal_dll_csharp
                 MessageBox.Show("Error", e.Message);
             }
             return 0.0;
-        }
+        }    
     }
 
 }

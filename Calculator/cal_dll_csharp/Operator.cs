@@ -11,7 +11,7 @@ namespace cal_dll_csharp
     public class Number
     {
         //数值
-        public object value = 0.0;
+        public object value;
         //是否为double类型
         public bool isDouble = true;
         //是否为bool类型
