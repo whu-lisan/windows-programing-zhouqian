@@ -18,6 +18,14 @@ namespace cal_dll_csharp
         public bool isBool = false;
         //bool值
         public bool boolValue = false;
+
+        public void copy(Number number)
+        {
+            value = number.value;
+            isDouble = number.isDouble;
+            isBool = number.isBool;
+            boolValue = number.boolValue;
+        }
     }
 
     //自定义运算符类

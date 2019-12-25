@@ -27,14 +27,14 @@ namespace cal_dll_csharp
                 number.isBool = false;
                 number.value = Math.E;
             }
-            if (s.Equals("π"))
+            else if (s.Equals("π"))
             {
                 number = new Number();
                 number.isBool = false;
                 number.value = Math.PI;
             }
             //如果为操作数
-            if (success_int || success_double)
+            else if (success_int || success_double)
             {
                 number = new Number();
                 number.isBool = false;
@@ -55,8 +55,8 @@ namespace cal_dll_csharp
                 Operator @operator = (Operator)number;
                 @operator.operatorType = s;
                 if (s.Equals("^2") || s.Equals("^3") || s.Equals("2√") || s.Equals("3√")
-                || s.Equals("sin") || s.Equals("cos") || s.Equals("sinh") || s.Equals("cosh")
-                || s.Equals("NOT"))
+                || s.Equals("Sin") || s.Equals("Cos") || s.Equals("Tan") || s.Equals("Sinh")
+                || s.Equals("Cosh") || s.Equals("Tanh") || s.Equals("NOT"))
                 {
                     @operator.isUnary = true;
                     @operator.priority = 1;
@@ -134,14 +134,14 @@ namespace cal_dll_csharp
                         }
                         else
                         {
-                            //(b) 若比运算符堆栈栈顶的运算符优先级高或相等，则直接存入运算符堆栈。  
-                            if (@operator.priority <= operators.Peek().priority)
+                            //(b) 若比运算符堆栈栈顶的运算符优先级高，则直接存入运算符堆栈。  
+                            if (@operator.priority < operators.Peek().priority)
                             {
                                 operators.Push(@operator);
                             }
                             else
                             {
-                                // (c) 若比运算符堆栈栈顶的运算符优先级低，则输出栈顶运算符到操作数堆栈，并将当前运算符压入运算符堆栈。
+                                // (c) 若比运算符堆栈栈顶的运算符优先级低或相等，则输出栈顶运算符到操作数堆栈，并将当前运算符压入运算符堆栈。
                                 Operator op = operators.Pop();
                                 numbers.Push(op);
                                 operators.Push(@operator);
@@ -183,16 +183,20 @@ namespace cal_dll_csharp
                     {
                         Number number1 = resultSt.Pop();
                         @operator.value = unaryOperate(@operator, number1);
-                        resultSt.Push(@operator);
+                        Number reslt = new Number();
+                        reslt.copy(@operator);
+                        resultSt.Push(reslt);
                     }
                     else
                     {
-                        //如果字符是个操作符，弹出两个操作数，执行恰当操作，
+                        //如果是二元运算符，弹出两个操作数，执行恰当操作，
                         //然后把结果压入堆栈。如果您不能够弹出两个操作数，后缀表达式的语法就不正确。 
                         Number number1 = resultSt.Pop();
                         Number number2 = resultSt.Pop();
                         @operator.value = binaryOperate(@operator, number2, number1);
-                        resultSt.Push(@operator);
+                        Number reslt = new Number();
+                        reslt.copy(@operator);
+                        resultSt.Push(reslt);
                     }
                 }
                 expr.Pop();
@@ -280,15 +284,15 @@ namespace cal_dll_csharp
                 {
                     case "+":
                         result = leftValue + rightValue;
-                        @operator.isDouble = left.isDouble && right.isDouble;
+                        @operator.isDouble = left.isDouble || right.isDouble;
                         return @operator.isDouble ? result : (int)result;
                     case "-":
                         result = leftValue - rightValue;
-                        @operator.isDouble = left.isDouble && right.isDouble;
+                        @operator.isDouble = left.isDouble || right.isDouble;
                         return @operator.isDouble ? result : (int)result;
                     case "*":
                         result = leftValue * rightValue;
-                        @operator.isDouble = left.isDouble && right.isDouble;
+                        @operator.isDouble = left.isDouble || right.isDouble;
                         return @operator.isDouble ? result : (int)result;
                     case "/":
                         if (rightValue - 0 < 0.00001)
@@ -300,16 +304,16 @@ namespace cal_dll_csharp
                         if (rightValue - 0 < 0.00001)
                             throw new CalException("不能对0求余数");
                         result = leftValue * rightValue;
-                        @operator.isDouble = left.isDouble && right.isDouble;
+                        @operator.isDouble = left.isDouble || right.isDouble;
                         return @operator.isDouble ? result : (int)result;
                     case "^":
                         result = Math.Pow(leftValue, rightValue);
-                        @operator.isDouble = left.isDouble && right.isDouble;
+                        @operator.isDouble = left.isDouble || right.isDouble;
                         return @operator.isDouble ? result : (int)result;
                     case "√":
                         if (rightValue< 0.5)
                             throw new CalException("开n次根号,n只能是大于1的正数");
-                        return Math.Pow(rightValue, 1 / (int)leftValue);
+                        return Math.Pow(rightValue, 1.0 / (int)leftValue);
                     case ">":
                         @operator.isBool = true;
                         @operator.isDouble = false;
