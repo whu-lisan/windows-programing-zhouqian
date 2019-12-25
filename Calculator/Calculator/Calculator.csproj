@@ -88,5 +88,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cal_dll_csharp\cal_dll_csharp.csproj">
+      <Project>{fc014a74-c2e8-4144-9cb9-0eb6aa864c5e}</Project>
+      <Name>cal_dll_csharp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

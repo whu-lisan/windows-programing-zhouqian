@@ -6,7 +6,6 @@
         /// 必需的设计器变量。
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
         /// <summary>
         /// 清理所有正在使用的资源。
         /// </summary>
@@ -28,7 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.resultTxBox = new System.Windows.Forms.TextBox();
+            this.resultTxtBox = new System.Windows.Forms.TextBox();
             this.inputTxBox = new System.Windows.Forms.TextBox();
             this.allTLPanel = new System.Windows.Forms.TableLayoutPanel();
             this.buttonTLPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -41,8 +40,8 @@
             this.lessButton = new System.Windows.Forms.Button();
             this.aboveButton = new System.Windows.Forms.Button();
             this.matrixButton = new System.Windows.Forms.Button();
-            this.oct2BinButton = new System.Windows.Forms.Button();
-            this.bin2OctButton = new System.Windows.Forms.Button();
+            this.rightShiftButton = new System.Windows.Forms.Button();
+            this.leftShiftButton = new System.Windows.Forms.Button();
             this.notButton = new System.Windows.Forms.Button();
             this.orButton = new System.Windows.Forms.Button();
             this.andButton = new System.Windows.Forms.Button();
@@ -98,17 +97,18 @@
             this.seniorTLPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // resultTxBox
+            // resultTxtBox
             // 
-            this.resultTxBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resultTxBox.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.resultTxBox.Location = new System.Drawing.Point(3, 45);
-            this.resultTxBox.Multiline = true;
-            this.resultTxBox.Name = "resultTxBox";
-            this.resultTxBox.ReadOnly = true;
-            this.resultTxBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.resultTxBox.Size = new System.Drawing.Size(808, 79);
-            this.resultTxBox.TabIndex = 1;
+            this.resultTxtBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resultTxtBox.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.resultTxtBox.Location = new System.Drawing.Point(3, 45);
+            this.resultTxtBox.Multiline = true;
+            this.resultTxtBox.Name = "resultTxtBox";
+            this.resultTxtBox.ReadOnly = true;
+            this.resultTxtBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.resultTxtBox.Size = new System.Drawing.Size(808, 79);
+            this.resultTxtBox.TabIndex = 1;
+            this.resultTxtBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // inputTxBox
             // 
@@ -128,7 +128,7 @@
             this.allTLPanel.ColumnCount = 1;
             this.allTLPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.allTLPanel.Controls.Add(this.inputTxBox, 0, 0);
-            this.allTLPanel.Controls.Add(this.resultTxBox, 0, 1);
+            this.allTLPanel.Controls.Add(this.resultTxtBox, 0, 1);
             this.allTLPanel.Controls.Add(this.buttonTLPanel, 0, 2);
             this.allTLPanel.Location = new System.Drawing.Point(12, 12);
             this.allTLPanel.Name = "allTLPanel";
@@ -182,8 +182,8 @@
             this.tableLayoutPanel1.Controls.Add(this.lessButton, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.aboveButton, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.matrixButton, 2, 2);
-            this.tableLayoutPanel1.Controls.Add(this.oct2BinButton, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.bin2OctButton, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.rightShiftButton, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.leftShiftButton, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.notButton, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.orButton, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.andButton, 0, 1);
@@ -212,6 +212,7 @@
             this.notEqualButton.TabIndex = 51;
             this.notEqualButton.Text = "!=";
             this.notEqualButton.UseVisualStyleBackColor = true;
+            this.notEqualButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // lessEqualButton
             // 
@@ -223,6 +224,7 @@
             this.lessEqualButton.TabIndex = 50;
             this.lessEqualButton.Text = "<=";
             this.lessEqualButton.UseVisualStyleBackColor = true;
+            this.lessEqualButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // aboveEqualButton
             // 
@@ -234,6 +236,7 @@
             this.aboveEqualButton.TabIndex = 49;
             this.aboveEqualButton.Text = ">=";
             this.aboveEqualButton.UseVisualStyleBackColor = true;
+            this.aboveEqualButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // equalButton
             // 
@@ -245,6 +248,7 @@
             this.equalButton.TabIndex = 48;
             this.equalButton.Text = "==";
             this.equalButton.UseVisualStyleBackColor = true;
+            this.equalButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // lessButton
             // 
@@ -256,6 +260,7 @@
             this.lessButton.TabIndex = 47;
             this.lessButton.Text = "<";
             this.lessButton.UseVisualStyleBackColor = true;
+            this.lessButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // aboveButton
             // 
@@ -267,6 +272,7 @@
             this.aboveButton.TabIndex = 46;
             this.aboveButton.Text = ">";
             this.aboveButton.UseVisualStyleBackColor = true;
+            this.aboveButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // matrixButton
             // 
@@ -280,27 +286,29 @@
             this.matrixButton.UseVisualStyleBackColor = true;
             this.matrixButton.Click += new System.EventHandler(this.matrixButton_Click);
             // 
-            // oct2BinButton
+            // rightShiftButton
             // 
-            this.oct2BinButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.oct2BinButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.oct2BinButton.Location = new System.Drawing.Point(84, 105);
-            this.oct2BinButton.Name = "oct2BinButton";
-            this.oct2BinButton.Size = new System.Drawing.Size(75, 45);
-            this.oct2BinButton.TabIndex = 44;
-            this.oct2BinButton.Text = "10转2";
-            this.oct2BinButton.UseVisualStyleBackColor = true;
+            this.rightShiftButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rightShiftButton.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.rightShiftButton.Location = new System.Drawing.Point(84, 105);
+            this.rightShiftButton.Name = "rightShiftButton";
+            this.rightShiftButton.Size = new System.Drawing.Size(75, 45);
+            this.rightShiftButton.TabIndex = 44;
+            this.rightShiftButton.Text = "→";
+            this.rightShiftButton.UseVisualStyleBackColor = true;
+            this.rightShiftButton.Click += new System.EventHandler(this.rightShiftButton_Click);
             // 
-            // bin2OctButton
+            // leftShiftButton
             // 
-            this.bin2OctButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.bin2OctButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.bin2OctButton.Location = new System.Drawing.Point(3, 105);
-            this.bin2OctButton.Name = "bin2OctButton";
-            this.bin2OctButton.Size = new System.Drawing.Size(75, 45);
-            this.bin2OctButton.TabIndex = 43;
-            this.bin2OctButton.Text = "2转10";
-            this.bin2OctButton.UseVisualStyleBackColor = true;
+            this.leftShiftButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.leftShiftButton.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.leftShiftButton.Location = new System.Drawing.Point(3, 105);
+            this.leftShiftButton.Name = "leftShiftButton";
+            this.leftShiftButton.Size = new System.Drawing.Size(75, 45);
+            this.leftShiftButton.TabIndex = 43;
+            this.leftShiftButton.Text = "←";
+            this.leftShiftButton.UseVisualStyleBackColor = true;
+            this.leftShiftButton.Click += new System.EventHandler(this.leftShiftButton_Click);
             // 
             // notButton
             // 
@@ -312,6 +320,7 @@
             this.notButton.TabIndex = 42;
             this.notButton.Text = "NOT";
             this.notButton.UseVisualStyleBackColor = true;
+            this.notButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // orButton
             // 
@@ -323,6 +332,7 @@
             this.orButton.TabIndex = 41;
             this.orButton.Text = "OR";
             this.orButton.UseVisualStyleBackColor = true;
+            this.orButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // andButton
             // 
@@ -332,8 +342,9 @@
             this.andButton.Name = "andButton";
             this.andButton.Size = new System.Drawing.Size(75, 45);
             this.andButton.TabIndex = 40;
-            this.andButton.Text = "And";
+            this.andButton.Text = "AND";
             this.andButton.UseVisualStyleBackColor = true;
+            this.andButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // xorButton
             // 
@@ -345,6 +356,7 @@
             this.xorButton.TabIndex = 39;
             this.xorButton.Text = "XOR";
             this.xorButton.UseVisualStyleBackColor = true;
+            this.xorButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // falseButton
             // 
@@ -356,6 +368,7 @@
             this.falseButton.TabIndex = 38;
             this.falseButton.Text = "False";
             this.falseButton.UseVisualStyleBackColor = true;
+            this.falseButton.Click += new System.EventHandler(this.falseButton_Click);
             // 
             // trueButton
             // 
@@ -367,6 +380,7 @@
             this.trueButton.TabIndex = 37;
             this.trueButton.Text = "True";
             this.trueButton.UseVisualStyleBackColor = true;
+            this.trueButton.Click += new System.EventHandler(this.trueButton_Click);
             // 
             // juniorGBox
             // 
@@ -430,6 +444,7 @@
             this.subButton.TabIndex = 28;
             this.subButton.Text = "-";
             this.subButton.UseVisualStyleBackColor = false;
+            this.subButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // button5
             // 
@@ -441,6 +456,7 @@
             this.button5.TabIndex = 26;
             this.button5.Text = "5";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.dight_Click);
             // 
             // MultiButton
             // 
@@ -453,6 +469,7 @@
             this.MultiButton.TabIndex = 24;
             this.MultiButton.Text = "*";
             this.MultiButton.UseVisualStyleBackColor = false;
+            this.MultiButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // button8
             // 
@@ -464,6 +481,7 @@
             this.button8.TabIndex = 22;
             this.button8.Text = "8";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.dight_Click);
             // 
             // button2
             // 
@@ -475,6 +493,7 @@
             this.button2.TabIndex = 30;
             this.button2.Text = "2";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.dight_Click);
             // 
             // percentButton
             // 
@@ -487,6 +506,7 @@
             this.percentButton.TabIndex = 19;
             this.percentButton.Text = "%";
             this.percentButton.UseVisualStyleBackColor = false;
+            this.percentButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // ACButton
             // 
@@ -499,6 +519,7 @@
             this.ACButton.TabIndex = 17;
             this.ACButton.Text = "AC";
             this.ACButton.UseVisualStyleBackColor = false;
+            this.ACButton.Click += new System.EventHandler(this.ACButton_Click);
             // 
             // returnButton
             // 
@@ -511,6 +532,7 @@
             this.returnButton.TabIndex = 36;
             this.returnButton.Text = "=";
             this.returnButton.UseVisualStyleBackColor = false;
+            this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
             // 
             // button6
             // 
@@ -522,6 +544,7 @@
             this.button6.TabIndex = 27;
             this.button6.Text = "6";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.dight_Click);
             // 
             // button3
             // 
@@ -533,6 +556,7 @@
             this.button3.TabIndex = 31;
             this.button3.Text = "3";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.dight_Click);
             // 
             // pointButton
             // 
@@ -544,6 +568,7 @@
             this.pointButton.TabIndex = 35;
             this.pointButton.Text = ".";
             this.pointButton.UseVisualStyleBackColor = true;
+            this.pointButton.Click += new System.EventHandler(this.dight_Click);
             // 
             // addButton
             // 
@@ -556,6 +581,7 @@
             this.addButton.TabIndex = 32;
             this.addButton.Text = "+";
             this.addButton.UseVisualStyleBackColor = false;
+            this.addButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // button0
             // 
@@ -567,6 +593,7 @@
             this.button0.TabIndex = 34;
             this.button0.Text = "0";
             this.button0.UseVisualStyleBackColor = true;
+            this.button0.Click += new System.EventHandler(this.dight_Click);
             // 
             // eButton
             // 
@@ -578,6 +605,7 @@
             this.eButton.TabIndex = 33;
             this.eButton.Text = "e";
             this.eButton.UseVisualStyleBackColor = true;
+            this.eButton.Click += new System.EventHandler(this.eButton_Click);
             // 
             // button4
             // 
@@ -589,6 +617,7 @@
             this.button4.TabIndex = 25;
             this.button4.Text = "4";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.dight_Click);
             // 
             // divButton
             // 
@@ -601,6 +630,7 @@
             this.divButton.TabIndex = 20;
             this.divButton.Text = "/";
             this.divButton.UseVisualStyleBackColor = false;
+            this.divButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // button1
             // 
@@ -612,6 +642,7 @@
             this.button1.TabIndex = 29;
             this.button1.Text = "1";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.dight_Click);
             // 
             // button7
             // 
@@ -623,6 +654,7 @@
             this.button7.TabIndex = 21;
             this.button7.Text = "7";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.dight_Click);
             // 
             // delButton
             // 
@@ -633,8 +665,9 @@
             this.delButton.Name = "delButton";
             this.delButton.Size = new System.Drawing.Size(65, 45);
             this.delButton.TabIndex = 18;
-            this.delButton.Text = "⬅";
+            this.delButton.Text = "DEL";
             this.delButton.UseVisualStyleBackColor = false;
+            this.delButton.Click += new System.EventHandler(this.delButton_Click);
             // 
             // button9
             // 
@@ -646,6 +679,7 @@
             this.button9.TabIndex = 23;
             this.button9.Text = "9";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.dight_Click);
             // 
             // seniorGBox
             // 
@@ -701,8 +735,9 @@
             this.tanhButton.Name = "tanhButton";
             this.tanhButton.Size = new System.Drawing.Size(75, 48);
             this.tanhButton.TabIndex = 16;
-            this.tanhButton.Text = "tanh";
+            this.tanhButton.Text = "Tanh";
             this.tanhButton.UseVisualStyleBackColor = true;
+            this.tanhButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // coshButton
             // 
@@ -712,8 +747,9 @@
             this.coshButton.Name = "coshButton";
             this.coshButton.Size = new System.Drawing.Size(75, 48);
             this.coshButton.TabIndex = 15;
-            this.coshButton.Text = "cosh";
+            this.coshButton.Text = "Cosh";
             this.coshButton.UseVisualStyleBackColor = true;
+            this.coshButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // sinhButton
             // 
@@ -723,8 +759,9 @@
             this.sinhButton.Name = "sinhButton";
             this.sinhButton.Size = new System.Drawing.Size(75, 48);
             this.sinhButton.TabIndex = 14;
-            this.sinhButton.Text = "sinh";
+            this.sinhButton.Text = "Sinh";
             this.sinhButton.UseVisualStyleBackColor = true;
+            this.sinhButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // tanButton
             // 
@@ -734,8 +771,9 @@
             this.tanButton.Name = "tanButton";
             this.tanButton.Size = new System.Drawing.Size(75, 45);
             this.tanButton.TabIndex = 13;
-            this.tanButton.Text = "tan";
+            this.tanButton.Text = "Tan";
             this.tanButton.UseVisualStyleBackColor = true;
+            this.tanButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // cosButton
             // 
@@ -745,8 +783,9 @@
             this.cosButton.Name = "cosButton";
             this.cosButton.Size = new System.Drawing.Size(75, 45);
             this.cosButton.TabIndex = 12;
-            this.cosButton.Text = "cos";
+            this.cosButton.Text = "Cos";
             this.cosButton.UseVisualStyleBackColor = true;
+            this.cosButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // sinButton
             // 
@@ -756,8 +795,9 @@
             this.sinButton.Name = "sinButton";
             this.sinButton.Size = new System.Drawing.Size(75, 45);
             this.sinButton.TabIndex = 11;
-            this.sinButton.Text = "sin";
+            this.sinButton.Text = "Sin";
             this.sinButton.UseVisualStyleBackColor = true;
+            this.sinButton.Click += new System.EventHandler(this.operator_Click);
             // 
             // radicalYButton
             // 
@@ -769,6 +809,7 @@
             this.radicalYButton.TabIndex = 10;
             this.radicalYButton.Text = "Y√X";
             this.radicalYButton.UseVisualStyleBackColor = true;
+            this.radicalYButton.Click += new System.EventHandler(this.radicalYButton_Click);
             // 
             // radical3Button
             // 
@@ -780,6 +821,7 @@
             this.radical3Button.TabIndex = 9;
             this.radical3Button.Text = "3√X";
             this.radical3Button.UseVisualStyleBackColor = true;
+            this.radical3Button.Click += new System.EventHandler(this.radical3Button_Click);
             // 
             // radicalButton
             // 
@@ -791,6 +833,7 @@
             this.radicalButton.TabIndex = 8;
             this.radicalButton.Text = "2√X";
             this.radicalButton.UseVisualStyleBackColor = true;
+            this.radicalButton.Click += new System.EventHandler(this.radicalButton_Click);
             // 
             // powerButton
             // 
@@ -802,6 +845,7 @@
             this.powerButton.TabIndex = 7;
             this.powerButton.Text = "X^Y";
             this.powerButton.UseVisualStyleBackColor = true;
+            this.powerButton.Click += new System.EventHandler(this.powerButton_Click);
             // 
             // cubeButton
             // 
@@ -813,6 +857,7 @@
             this.cubeButton.TabIndex = 6;
             this.cubeButton.Text = "X^3";
             this.cubeButton.UseVisualStyleBackColor = true;
+            this.cubeButton.Click += new System.EventHandler(this.cubeButton_Click);
             // 
             // squareButton
             // 
@@ -824,6 +869,7 @@
             this.squareButton.TabIndex = 5;
             this.squareButton.Text = "X^2";
             this.squareButton.UseVisualStyleBackColor = true;
+            this.squareButton.Click += new System.EventHandler(this.squareButton_Click);
             // 
             // piButton
             // 
@@ -835,6 +881,7 @@
             this.piButton.TabIndex = 4;
             this.piButton.Text = "π";
             this.piButton.UseVisualStyleBackColor = true;
+            this.piButton.Click += new System.EventHandler(this.piButton_Click);
             // 
             // rightButton
             // 
@@ -847,6 +894,7 @@
             this.rightButton.Tag = ")";
             this.rightButton.Text = ")";
             this.rightButton.UseVisualStyleBackColor = true;
+            this.rightButton.Click += new System.EventHandler(this.rightButton_Click);
             // 
             // leftButton
             // 
@@ -859,6 +907,7 @@
             this.leftButton.Tag = "(";
             this.leftButton.Text = "(";
             this.leftButton.UseVisualStyleBackColor = true;
+            this.leftButton.Click += new System.EventHandler(this.leftButton_Click);
             // 
             // MainForm
             // 
@@ -884,7 +933,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox resultTxBox;
+        private System.Windows.Forms.TextBox resultTxtBox;
         private System.Windows.Forms.TextBox inputTxBox;
         private System.Windows.Forms.TableLayoutPanel allTLPanel;
         private System.Windows.Forms.TableLayoutPanel buttonTLPanel;
@@ -915,8 +964,8 @@
         private System.Windows.Forms.Button lessButton;
         private System.Windows.Forms.Button aboveButton;
         private System.Windows.Forms.Button matrixButton;
-        private System.Windows.Forms.Button oct2BinButton;
-        private System.Windows.Forms.Button bin2OctButton;
+        private System.Windows.Forms.Button rightShiftButton;
+        private System.Windows.Forms.Button leftShiftButton;
         private System.Windows.Forms.Button notButton;
         private System.Windows.Forms.Button orButton;
         private System.Windows.Forms.Button andButton;
