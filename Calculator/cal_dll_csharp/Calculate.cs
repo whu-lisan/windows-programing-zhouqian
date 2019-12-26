@@ -14,6 +14,7 @@ namespace cal_dll_csharp
         public static Stack<Operator> operators = new Stack<Operator>();//运算符堆栈
         public static Stack<Number> numbers = new Stack<Number>();//操作数堆栈
 
+        //依据字符串获取表达式单元
         public static Number getNumber(string s)
         {
             Number number = null;
@@ -21,13 +22,13 @@ namespace cal_dll_csharp
             double number_double = 0.0;
             bool success_long = long.TryParse(s, out number_long);
             bool success_double = double.TryParse(s, out number_double);
-            if(s.Equals("e"))
+            if(s.Equals("e")) //常数e
             {
                 number = new Number();
                 number.isBool = false;
                 number.value = Math.E;
             }
-            else if (s.Equals("π"))
+            else if (s.Equals("π")) //常数pi
             {
                 number = new Number();
                 number.isBool = false;
@@ -41,7 +42,7 @@ namespace cal_dll_csharp
                 number.isDouble = !success_long;
                 number.value = success_long ? number_long : number_double;
             }
-            else if (s.Equals("True") || s.Equals("False"))
+            else if (s.Equals("True") || s.Equals("False")) //布尔类型，True为1， False为0
             {
                 number = new Number();
                 number.isBool = true;
@@ -97,13 +98,16 @@ namespace cal_dll_csharp
             return number;
         }
 
+        //获取后缀表达式
         public static void getExpr(List<string> vs)
         {
             foreach(string s in vs)
             {
                 Number number = getNumber(s);
+                //操作数直接入操作数栈
                 if (number.GetType() == typeof(Number))
                     numbers.Push(number);
+                //运算符
                 else if(number.GetType() == typeof(Operator))
                 {
                     Operator @operator = (Operator)number;
@@ -164,6 +168,7 @@ namespace cal_dll_csharp
             }
         }
 
+        //后缀表达式求值
         public static object getValue()
         {
             //临时存储计算数据
@@ -179,9 +184,22 @@ namespace cal_dll_csharp
                 else
                 {
                     Operator @operator = (Operator)number;
-                    if (@operator.isUnary)
+                    if (@operator.isUnary) //一元运算符弹出一个操作数
                     {
+                        if(resultSt.Count < 1)
+                        {
+                            MessageBox.Show("表达式解析出错");
+                            return "当前运算符为" + @operator.operatorType;
+                        }
                         Number number1 = resultSt.Pop();
+                        if(number1.GetType() == typeof(Operator))
+                        {
+                            if (resultSt.Count < 1)
+                            {
+                                MessageBox.Show("表达式解析出错");
+                                return "当前运算符为" + @operator.operatorType;
+                            }
+                        }
                         @operator.value = unaryOperate(@operator, number1);
                         Number reslt = new Number();
                         reslt.copy(@operator);
@@ -189,10 +207,22 @@ namespace cal_dll_csharp
                     }
                     else
                     {
-                        //如果是二元运算符，弹出两个操作数，执行恰当操作，
-                        //然后把结果压入堆栈。如果您不能够弹出两个操作数，后缀表达式的语法就不正确。 
+                        //如果是二元运算符，弹出两个操作数，执行相关操作，然后把结果压入堆栈。
+                        if (resultSt.Count < 2)
+                        {
+                            MessageBox.Show("表达式解析出错");
+                            return "当前运算符为" + @operator.operatorType;
+                        }
                         Number number1 = resultSt.Pop();
                         Number number2 = resultSt.Pop();
+                        if (number1.GetType() == typeof(Operator) || number2.GetType() == typeof(Operator))
+                        {
+                            if (resultSt.Count < 1)
+                            {
+                                MessageBox.Show("表达式解析出错");
+                                return "当前运算符为" + @operator.operatorType;
+                            }
+                        }
                         @operator.value = binaryOperate(@operator, number2, number1);
                         Number reslt = new Number();
                         reslt.copy(@operator);
@@ -210,6 +240,7 @@ namespace cal_dll_csharp
             return result.isDouble ? val: (long)val;
         }
 
+        //一元运算符进行计算
         public static object unaryOperate(Operator @operator, Number number)
         {
             if (number == null)
@@ -243,7 +274,7 @@ namespace cal_dll_csharp
                             throw new CalException("小于0的数不能开二次根号");
                         return Math.Sqrt(value);
                     case "3√":
-                        return Math.Pow(value, 1 / 3);
+                        return Math.Pow(value, 1.0 / 3);
                     case "^2":
                         result = value * value;
                         @operator.isDouble = number.isDouble;
@@ -277,6 +308,7 @@ namespace cal_dll_csharp
             return 0.0;
         }
 
+        //二元运算符进行计算
         public static object binaryOperate(Operator @operator, Number left, Number right)
         {
             if (left == null || right == null)
@@ -312,7 +344,7 @@ namespace cal_dll_csharp
                     case "/":
                         if (rightValue - 0 < 0.00001)
                             throw new CalException("不能除以0");
-                        @operator.isDouble = (leftValue % rightValue) < 0.00001;
+                        @operator.isDouble = (leftValue % rightValue) > 0.00001;
                         result = leftValue / rightValue;
                         return @operator.isDouble ? result : (long)result;
                     case "%":
@@ -328,7 +360,7 @@ namespace cal_dll_csharp
                     case "√":
                         if (rightValue< 0.5)
                             throw new CalException("开n次根号,n只能是大于1的正数");
-                        return Math.Pow(rightValue, 1.0 / (int)leftValue);
+                        return Math.Pow(rightValue, 1.0 / leftValue);
                     case ">":
                         @operator.isBool = true;
                         @operator.isDouble = false;

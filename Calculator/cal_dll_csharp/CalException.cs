@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace cal_dll_csharp
 {
+    //自定义运算异常类
     public class CalException : ApplicationException
     {
         private string error;

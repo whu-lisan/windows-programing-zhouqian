@@ -11,62 +11,23 @@ using cal_dll_csharp;
 
 namespace Calculator
 {
-    enum type
+    enum Type
     {
-        unOp, binOp, leftBracket, rightBracket, digit,
+        beforeUnOp, afterUnOp, binOp, leftBracket, rightBracket, digit,
     }
     public partial class MainForm : Form
     {
-        private List<string> expr = new List<string>();
-        private List<type> types = new List<type>();
+        private List<string> expr = new List<string>();//表达式字符串
+        private List<Type> types = new List<Type>();//表达式单元类型
         private int curIndex = -1;
         private int curSelect = 0;
-        private StringBuilder digit = new StringBuilder();
+        private StringBuilder digit = new StringBuilder();//数字缓冲区
 
         public MainForm()
         {
             InitializeComponent();
         }
 
-        private void resultTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void showPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void inputTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void juniorGroupBox_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void programGroupBox_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void seniorGroupBox_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void flowLayoutPanel1_Paint_1(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void showText()
         {
@@ -83,10 +44,9 @@ namespace Calculator
                 inputTxBox.Select(0, 0);
         }
 
-        private void matrixButton_Click(object sender, EventArgs e)
+        private void exitButton_Click(object sender, EventArgs e)
         {
-            Form matrixForm = new MatrixForm();
-            matrixForm.Show();
+            this.Close();
         }
 
         private void ACButton_Click(object sender, EventArgs e)
@@ -108,7 +68,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "^2");
-            types.Insert(curIndex, type.unOp);
+            types.Insert(curIndex, Type.afterUnOp);
             showText();
         }
 
@@ -120,7 +80,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "^3");
-            types.Insert(curIndex, type.unOp);
+            types.Insert(curIndex, Type.afterUnOp);
             showText();
         }
 
@@ -132,7 +92,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "^");
-            types.Insert(curIndex, type.binOp);
+            types.Insert(curIndex, Type.binOp);
             showText();
         }
 
@@ -144,7 +104,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "2√");
-            types.Insert(curIndex, type.unOp);
+            types.Insert(curIndex, Type.beforeUnOp);
             showText();
         }
 
@@ -156,7 +116,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "3√");
-            types.Insert(curIndex, type.unOp);
+            types.Insert(curIndex, Type.beforeUnOp);
             showText();
         }
 
@@ -168,7 +128,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "√");
-            types.Insert(curIndex, type.binOp);
+            types.Insert(curIndex, Type.binOp);
             showText();
         }
 
@@ -229,7 +189,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "π");
-            types.Insert(curIndex, type.digit);
+            types.Insert(curIndex, Type.digit);
             showText();
         }
 
@@ -248,9 +208,9 @@ namespace Calculator
                 if (text == "Sin" || text == "Cos" || text == "Tan"
                   || text == "Sinh" || text == "Cosh" || text == "Tanh"
                   || text == "NOT")
-                    types.Insert(curIndex, type.unOp);
+                    types.Insert(curIndex, Type.beforeUnOp);
                 else
-                    types.Insert(curIndex, type.binOp);
+                    types.Insert(curIndex, Type.binOp);
                 showText();
             }
         }
@@ -263,7 +223,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "e");
-            types.Insert(curIndex, type.digit);
+            types.Insert(curIndex, Type.digit);
             showText();
         }
 
@@ -275,7 +235,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "True");
-            types.Insert(curIndex, type.digit);
+            types.Insert(curIndex, Type.digit);
             showText();
         }
 
@@ -287,7 +247,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "False");
-            types.Insert(curIndex, type.digit);
+            types.Insert(curIndex, Type.digit);
             showText();
         }
 
@@ -299,7 +259,7 @@ namespace Calculator
                 curSelect += expr[curIndex].Length;
             curIndex++;
             expr.Insert(curIndex, "(");
-            types.Insert(curIndex, type.leftBracket);
+            types.Insert(curIndex, Type.leftBracket);
             showText();
         }
 
@@ -310,8 +270,8 @@ namespace Calculator
             if (curIndex >= 0)
                 curSelect += expr[curIndex].Length;
             curIndex++;
-            expr.Insert(curIndex, "(");
-            types.Insert(curIndex, type.rightBracket);
+            expr.Insert(curIndex, ")");
+            types.Insert(curIndex, Type.rightBracket);
             showText();
         }
 
@@ -344,7 +304,7 @@ namespace Calculator
                     curSelect += expr[curIndex].Length;
                 curIndex++;
                 expr.Insert(curIndex, digit.ToString());
-                types.Insert(curIndex, type.digit);
+                types.Insert(curIndex, Type.digit);
                 showText();
                 digit.Clear();
             }
@@ -363,20 +323,17 @@ namespace Calculator
 
         private bool checkType()
         {
-            List<type> copytypes = new List<type>(types);
-
+            List<Type> copytypes = new List<Type>(types);
             int leftBracketCount = 0;
             for (int i = 0; i < types.Count; i++)
             {
-                if (copytypes[i] == type.leftBracket)
+                if (types[i] == Type.leftBracket)
                 {
                     leftBracketCount++;
-                    copytypes.RemoveAt(i);
                 }
-                else if (copytypes[i] == type.rightBracket)
+                else if (types[i] == Type.rightBracket)
                 {
                     leftBracketCount--;
-                    copytypes.RemoveAt(i);
                     if (leftBracketCount < 0)
                     {
                         MessageBox.Show("表达式括号不匹配");
@@ -389,22 +346,36 @@ namespace Calculator
                 MessageBox.Show("表达式括号不匹配");
                 return false;
             }
+            copytypes.RemoveAll(t => (t == Type.leftBracket || t == Type.rightBracket));
             for (int i = 0; i < copytypes.Count; i++)
             {
-                if (copytypes[i] == type.unOp)
+                if (copytypes[i] == Type.beforeUnOp)
                 {
                     if (i == copytypes.Count - 1)
                     {
-                        MessageBox.Show("表达式不能以一元运算符结尾");
+                        MessageBox.Show("表达式不能以前置一元运算符结尾");
                         return false;
                     }
-                    if (copytypes[i + 1] == type.binOp)
+                    if (copytypes[i + 1] == Type.binOp || copytypes[i+1] == Type.afterUnOp)
                     {
-                        MessageBox.Show("一元运算符后面没有数值");
+                        MessageBox.Show("前置一元运算符后面没有数值");
                         return false;
                     }
                 }
-                if (copytypes[i] == type.binOp)
+                if (copytypes[i] == Type.afterUnOp)
+                {
+                    if (i == 0)
+                    {
+                        MessageBox.Show("表达式不能以后置一元运算符开头");
+                        return false;
+                    }
+                    if (copytypes[i - 1] == Type.binOp || copytypes[i - 1] == Type.beforeUnOp)
+                    {
+                        MessageBox.Show("后置一元运算符前面没有数值");
+                        return false;
+                    }
+                }
+                if (copytypes[i] == Type.binOp)
                 {
                     if (i == copytypes.Count - 1)
                     {
@@ -416,16 +387,17 @@ namespace Calculator
                         MessageBox.Show("表达式不能以二元运算符开头");
                         return false;
                     }
-                    if (copytypes[i + 1] == type.binOp || copytypes[i - 1] == type.binOp
-                        || copytypes[i - 1] == type.unOp)
+                    if (copytypes[i + 1] == Type.binOp || copytypes[i + 1] == Type.afterUnOp
+                        || copytypes[i - 1] == Type.binOp || copytypes[i - 1] == Type.beforeUnOp
+                        )
                     {
                         MessageBox.Show("二元运算符前后没有数值");
                         return false;
                     }
                 }
-                if(copytypes[i] == type.digit)
+                if(copytypes[i] == Type.digit)
                 {
-                    if( i < copytypes.Count - 1 && copytypes[i+1] == type.digit)
+                    if( i < copytypes.Count - 1 && copytypes[i+1] == Type.digit)
                     {
                         MessageBox.Show("不能有两个连续的数字");
                         return false;
